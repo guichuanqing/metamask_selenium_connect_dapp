@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "metamask-selenium-connectdapp"
+version = "0.1.0"
+description = ""
+authors = ["chris <xxx@xx.com>"]
+readme = "README.md"
+packages = [{include = "metamask_selenium_connectdapp"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyperclip = "^1.8.2"
+loguru = "^0.6.0"
+selenium = "^4.7.2"
+requests = "^2.28.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "tsinghua"
+default = true
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"

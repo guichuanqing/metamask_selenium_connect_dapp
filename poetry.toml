@@ -1,0 +1,4 @@
+cache-dir = "E:\\PythonCode\\metamask_selenium_connectDapp\\poetry\\cache"
+[virtualenvs]
+in-project = true
+create = true
