@@ -20,6 +20,9 @@ if __name__ == '__main__':
     # - 传入的代理类型，如果不是在['noproxy', 'http', 'https', 'socks5']中，默认为提取代理，脚本会设置proxyMethod=3, proxyIp为提取链接，传入dynamicIpUrl
     driver, browser_id = bit.get_driver(username=f'', password='', proxyType='noproxy',
                                         proxyIp='', proxyPort='', proxyUsername='', proxyPassword='', dynamicIpUrl='')
+
+    print("等待浏览器完全启动")
+    time.sleep(8)
     driver.switch_to.window(driver.window_handles[0])
     driver.get('https://app.uniswap.org/')
     time.sleep(3)
@@ -33,16 +36,15 @@ if __name__ == '__main__':
 
     time.sleep(3)
 
+    # 导入助记词
     recoveryPhrase = "cloud shove firm between fog faculty photo early output artwork woman scatter"
     metamask.metamaskSetup(driver, recoveryPhrase, "66666666")
 
-    # 点击 窗口1 dapp 登陆按钮
-    # 点击 窗口2 小狐狸 确认登陆
+    # 点击 窗口0 dapp 登陆按钮
 
     driver.switch_to.window(driver.window_handles[0])
     dappclick(driver)
     time.sleep(4)
-    # driver.switch_to.window(driver.window_handles[1])
 
     # 获取当前窗口所有句柄
     all_windows = driver.window_handles
@@ -51,7 +53,7 @@ if __name__ == '__main__':
     print(all_windows)
     print(current_window)
 
-
+    # 窗口 2 是小狐狸小弹窗
     driver.switch_to.window(driver.window_handles[2])
     time.sleep(2)
     print("切换后的窗口名称是：", driver.title)
