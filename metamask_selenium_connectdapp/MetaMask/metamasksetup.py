@@ -30,3 +30,4 @@ class metamask:
         driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[3]/div[2]/button[2]').click()
         time.sleep(2)
         driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[2]/footer/button[2]').click()
+
