@@ -1,8 +1,8 @@
 import time
 
 from metamask_selenium_connectdapp.BitBrowser.bitbrowser import BitBrowser
-from metamask_selenium_connectdapp.MetaMask.metamasksetup import metamask
-from metamask_selenium_connectdapp.DAPP.dapp import dappclick
+from metamask_selenium_connectdapp.MetaMask.metamask_setup import MetaMask
+from metamask_selenium_connectdapp.DAPP.dapp import dapp_click
 
 if __name__ == '__main__':
     # 使用示例
@@ -33,31 +33,22 @@ if __name__ == '__main__':
     driver.execute_script("window.open('');")
     driver.switch_to.window(driver.window_handles[1])
     driver.get('chrome-extension://{}/home.html'.format(EXTENSION_ID))
-
     time.sleep(3)
-
-    # 导入助记词
-    recoveryPhrase = "cloud shove firm between fog faculty photo early output artwork woman scatter"
-    metamask.metamaskSetup(driver, recoveryPhrase, "66666666")
-
-    # 点击 窗口0 dapp 登陆按钮
-
-    driver.switch_to.window(driver.window_handles[0])
-    dappclick(driver)
-    time.sleep(4)
-
-    # 获取当前窗口所有句柄
-    all_windows = driver.window_handles
-    # 获取当前标签页窗口句柄
-    current_window = driver.current_window_handle
-    print(all_windows)
-    print(current_window)
-
-    # 窗口 2 是小狐狸小弹窗
-    driver.switch_to.window(driver.window_handles[2])
-    time.sleep(2)
-    print("切换后的窗口名称是：", driver.title)
-    metamask.connectDapp(driver)
+    mm = MetaMask()
+    if mm.home_setup(driver=driver):
+        # 点击 窗口0 dapp 登陆按钮
+        driver.switch_to.window(driver.window_handles[0])
+        if dapp_click(driver):
+            time.sleep(4)
+            # 获取当前窗口所有句柄
+            all_windows = driver.window_handles
+            # 获取当前标签页窗口句柄
+            current_window = driver.current_window_handle
+            # 窗口 2 是小狐狸小弹窗
+            driver.switch_to.window(driver.window_handles[-1])
+            time.sleep(10)
+            print("切换后的窗口名称是：", driver.title)
+            mm.connect_dapp(driver=driver)
 
     # # 关闭浏览器
     # bit.close_browser(browser_id)
