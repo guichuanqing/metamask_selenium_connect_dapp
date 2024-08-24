@@ -5,6 +5,7 @@ import requests
 import json
 from loguru import logger
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 
 
 webgl_vendors = ['Google Inc.']
@@ -56,6 +57,8 @@ payload_config = {
     'disableGpu': False,  # 是否禁用GPU，默认false
     'enableBackgroundMode': False,  # 是否启用后台模式，默认false
     'muteAudio': True,  # 是否静音，默认True
+    'coreVersion': '126', # 内核版本，126
+    'coreProduct': 'chrome', #内核，chrome
 }
 
 
@@ -160,7 +163,6 @@ class BitBrowser:
             payload['proxyMethod'] = 3
             payload['dynamicIpChannel'] = ProxyType
             payload['dynamicIpUrl'] = proxyIp
-
         # 指纹对象随机生成
 
         # 从kwargs更新参数
@@ -203,7 +205,6 @@ class BitBrowser:
             payload['proxyMethod'] = 3
             payload['dynamicIpChannel'] = ProxyType
             payload['dynamicIpUrl'] = proxyIp
-
         data = self.__request('browser/update', payload)
         if data.get('success'):
             logger.info(f'创建浏览器成功，{username}')
@@ -232,7 +233,7 @@ class BitBrowser:
             options.arguments.extend(
                 ["--no-default-browser-check", "--no-first-run"])
             options.arguments.extend(["--no-sandbox", "--test-type"])
-            driver = webdriver.Chrome(options=options)
+            driver = webdriver.Chrome( options=options)
             # 随机位置
             x = random.randint(0, 500)
             y = random.randint(10, 200)

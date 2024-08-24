@@ -22,7 +22,7 @@ class MetaMask:
                 time.sleep(5)
                 elmt_addr = driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div[2]/div/div[2]/div/div/button/span[1]/span')
                 if elmt_addr.is_displayed():
-                    print("钱包登录成功")
+                    print("钱包首页登录成功")
                     time.sleep(1)
                     driver.close()
                     return True
@@ -88,14 +88,20 @@ class MetaMask:
             # 查找元素
             NO_passwd_element = driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[2]/div/p')
             passwd_element = driver.find_element(By.XPATH,'//*[@id="app-content"]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[2]/div/p')
+            print("开始连接钱包")
             # 检查元素是否显示在页面上
             if NO_passwd_element.is_displayed():
-                print("开始连接钱包")
+                print("点击下一步")
                 driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div/div/div[3]/div[2]/footer/button[2]').click()  # 点击 下一步
                 time.sleep(2)
-                driver.find_element(By.XPATH,
-                                    '//*[@id="app-content"]/div/div/div/div[3]/div[2]/footer/button[2]').click()  # 点击 链接
-                print("钱包连接成功！")
+                print("进行授权确认")
+                mod_element = driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div/div/div[3]/div[2]/footer/button[2]')
+                if mod_element.is_displayed():
+                    mod_element.click()
+                if self.second_sign(driver):
+                    print("钱包连接成功！")
+                else:
+                    print("钱包连接失败！")
             elif passwd_element.is_displayed():
                 print("未登录，输入密码中")
                 driver.find_element(By.XPATH, '//*[@id="password"]').send_keys(self.password)
@@ -104,3 +110,19 @@ class MetaMask:
                 driver.find_element(By.XPATH,'/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div[2]/footer/button[2]').click()
         except NoSuchElementException:
             print(f"钱包链接失败")
+
+    def second_sign(self, driver):
+        try:
+            time.sleep(3)
+            sign_element = driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div/div/div/div[3]/button[2]')  # 签名按钮
+            scroll_element = driver.find_element(By.XPATH, '//*[@id="app-content"]/div/div/div/div/div[2]/div/button') # 滚动按钮
+            print("再次点击签名")
+            if sign_element.is_displayed() and scroll_element.is_displayed():
+                scroll_element.click()
+                time.sleep(2)
+                sign_element.click()
+                time.sleep(2)
+                return True
+        except NoSuchElementException:
+            print("钱包无需再次签名！")
+            return False
